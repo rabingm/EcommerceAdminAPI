@@ -1,2 +1,30 @@
 ### rest access
-GET "http://localhost:8000"
+GET http://localhost:8000
+
+
+###login api endpoint
+POST http://localhost:8000/api/v1/login
+Content-Type: application/json 
+
+{
+    "email": "test@gmail.com",
+    "password":"daeded"
+}
+
+
+
+####Category Zone####
+#Fetch all category
+GET http://localhost:8000/api/v1/category
+
+
+###login api endpoint
+POST http://localhost:8000/api/v1/category
+Content-Type: application/json 
+
+{
+    "email": "test@gmail.com",
+    "password":"daeded"
+}
+
+
