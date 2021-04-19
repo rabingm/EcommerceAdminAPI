@@ -1,30 +1,41 @@
-import catSchema from "./Category.schema.js";
+import CategorySchema from "./Category.schema.js";
 
+export const insertCategory = catObj => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const result = await CategorySchema(catObj).save();
 
-export const insertCategory  = catObj =>{
-    return new Promise(async(resolve, reject)=>{
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
 
-        try {
-            const result = await catSchema(catObj).save()
+export const getCategories = catObj => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const result = await CategorySchema.find();
 
-            resolve(result)
-        } catch (error) {
-            reject(error)
-            
-        }
-    }
-    )}
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
 
-    export const getCategory  = () =>{
-        return new Promise(async(resolve, reject)=>{
-    
-            try {
-                const result = await  catSchema.find()
-    
-                resolve(result)
-            } catch (error) {
-                reject(error)
-                
-            }
-        }
-        )}
+export const deleteCategories = catArg => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const result = await CategorySchema.deleteMany({
+				_id: {
+					$in: catArg,
+				},
+			});
+
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};

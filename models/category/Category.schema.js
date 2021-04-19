@@ -1,35 +1,26 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
+const CategorySchema = mongoose.Schema(
+	{
+		name: {
+			type: String,
+			require: true,
+			default: "",
+		},
+		slug: {
+			type: String,
+			require: true,
+			default: "",
+		},
+		parentCat: {
+			type: mongoose.Schema.ObjectId,
+		},
+	},
+	{
+		timestamp: true,
+	}
+);
 
-const CategorySchema = mongoose.Schema({
-name :{
-    type:String,
-    require:true,
-    default:"",
+const CatSchema = mongoose.model("Category", CategorySchema);
 
-},
-parentCat :{
-    type:String,
-    require:true,
-    default:"",
-    
-},
-// childCats:[
-//     {
-//         name :{
-//             type:String,
-//             require:true,
-//             default:"",
-        
-//         },
-//     }
-// ]
-
-});
-timestamps : true;
-
-
-const catSchema = mongoose.model("Category", CategorySchema)
-
-
-export default catSchema
+export default CatSchema;

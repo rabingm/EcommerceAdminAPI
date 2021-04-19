@@ -1,30 +1,47 @@
-### rest access
-GET http://localhost:8000
 
+### root access
+GET  http://localhost:8000
 
-###login api endpoint
-POST http://localhost:8000/api/v1/login
-Content-Type: application/json 
+### Login api endpoing
+POST  http://localhost:8000/api/v1/login
+Content-Type: application/json
 
 {
-    "email": "test@gmail.com",
-    "password":"daeded"
+  "email": "test@emai.comd",
+  "password": "12346"
 }
 
 
 
-####Category Zone####
-#Fetch all category
-GET http://localhost:8000/api/v1/category
+
+### Categor Zone ####
+### Fetch all category
+GET  http://localhost:8000/api/v1/category
+ 
 
 
-###login api endpoint
-POST http://localhost:8000/api/v1/category
-Content-Type: application/json 
+### Add a category
+POST  http://localhost:8000/api/v1/category
+Content-Type: application/json
 
-{
-    "email": "test@gmail.com",
-    "password":"daeded"
-}
+{"name": "Root Category", "parentCat": 0}
 
+### Delete Categories
+Delete  http://localhost:8000/api/v1/category
+ 
+ 
+### Products APIs
+### Add new product
+POST  http://localhost:8000/api/v1/product
+Content-Type: application/json
+
+{"name": "Root Category", 
+"price": 0}
+
+
+### fetch all products
+GET   http://localhost:8000/api/v1/product
+
+### fetch single product
+GET   http://localhost:8000/api/v1/product/607a850e263dc01ac00d540c
 
