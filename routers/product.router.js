@@ -16,40 +16,40 @@ import {
 	updateProductById,
 } from "../models/product/Product.model.js";
 
+// Multer configuration
+
 const ALLOWED_FILE_TYPE = {
 	"image/png": "png",
 	"image/jpeg": "jpeg",
-	"image/jpg": "jpg"
-}
+	"image/jpg": "jpg",
+};
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		let error = null
+		let error = null;
+		const isAllowed = ALLOWED_FILE_TYPE[file.mimetype];
 
-//get file type req.mimetype(property of file)
-		const isAllowed = ALLOWED_FILE_TYPE[file.mimetype]
-
-		if(!isAllowed){
-			error = new Error("Some of the file type are not alowed, only images are allowed")
-
-			error.status = 400
-
+		if (!isAllowed) {
+			error = new Error(
+				"Some of the file types are not allowd, Only images are allowed"
+			);
+			error.status = 400;
 		}
-	  cb(error, 'public/img/product')
+
+		cb(error, "public/img/product");
 	},
 	filename: function (req, file, cb) {
-		//get filename
-		const fileName = slugify(file.originalname.split(".")[0])
+		//he there.jpg ==> he-there-4646465.jpg
+		const fileName = slugify(file.originalname.split(".")[0]);
+		const extension = ALLOWED_FILE_TYPE[file.mimetype];
+		const fullFileName = fileName + "-" + Date.now() + "." + extension;
+		cb(null, fullFileName);
+	},
+});
 
-		//get extension of file 
-		const extension = ALLOWED_FILE_TYPE[file.mimetype]
-		const fullFileName = fileName + '-' + Date.now() + '.' + extension;
-	  cb(null, fullFileName)
-	}
-  })
-   
-  var upload = multer({ storage: storage })	
+var upload = multer({ storage: storage });
 
+// End Multer configuration
 
 router.all("*", (req, res, next) => {
 	next();
@@ -70,52 +70,62 @@ router.get("/:_id?", async (req, res) => {
 	}
 });
 
-router.post("/", upload.array("images", 5), newProductValidation, async (req, res) => {
+router.post(
+	"/",
+	upload.array("images", 5),
+	newProductValidation,
+	async (req, res) => {
+		try {
+			const addNewProd = {
+				...req.body,
+				slug: slugify(req.body.name),
+			};
 
-	try {
-		const addNewProd = {
-			...req.body,
-			slug: slugify(req.body.name),
-		};
+			const basePath = `${req.protocol}://${req.get("host")}/img/product/`;
+			const files = req.files;
+			console.log(files);
 
+			const images = [];
 
-		const basePath = `${req.protocol}://${req.get('host')}/img/product/`
-		const files = req.files
+			files.map(file => {
+				const imgFullPath = basePath + file.filename;
 
-		const images = []
-
-		files.map(file =>{
-			const imgFullPath = basePath + file.filename
-
-			images.push(imgFullPath)
-		})
-
-
-		const result = await insertProduct({...addNewProd, images});
-		// console.log(result);
-
-		if (result._id) {
-			return res.json({
-				status: "success",
-				message: "The product has been added!",
-				result,
+				images.push(imgFullPath);
 			});
+
+			const result = await insertProduct({
+				...addNewProd,
+				images,
+			});
+			console.log(result);
+
+			if (result._id) {
+				return res.json({
+					status: "success",
+					message: "The product has been added!",
+					result,
+				});
+			}
+
+			res.json({
+				status: "error",
+				message: "Unable to add the product, Please try again later",
+			});
+		} catch (error) {
+			throw error;
 		}
-
-		res.json({
-			status: "error",
-			message: "Unable to add the product, Please try again later",
-		});
-	} catch (error) {
-		throw error;
 	}
-});
+);
 
-router.put("/",upload.array("images", 5), updateProductValidation, async (req, res) => {
-	try{
-	const { _id, imageToDelete, ...formDt } = req.body;
+router.put(
+	"/",
+	upload.array("images", 5),
+	updateProductValidation,
+	async (req, res) => {
+		try {
+			const { _id, imgToDelete, ...formDt } = req.body;
 
-	const basePath = `${req.protocol}://${req.get("host")}/img/product/`;
+			const basePath = `${req.protocol}://${req.get("host")}/img/product/`;
 			const files = req.files;
 			let images = [];
 
@@ -145,6 +155,7 @@ router.put("/",upload.array("images", 5), updateProductValidation, async (req, r
 				...formDt,
 				images,
 			};
+
 			const result = await updateProductById({ _id, updateProduct });
 
 			console.log(result);
@@ -166,6 +177,7 @@ router.put("/",upload.array("images", 5), updateProductValidation, async (req, r
 		}
 	}
 );
+
 router.delete("/", async (req, res) => {
 	try {
 		if (!req.body) {
