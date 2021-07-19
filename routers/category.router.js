@@ -14,10 +14,6 @@ import {
 	updateCategoryValidation,
 } from "../middlewares/formValidation.middleware.js";
 
-router.all("*", (req, res, next) => {
-	next();
-});
-
 router.get("/", async (req, res) => {
 	try {
 		const result = await getCategories();

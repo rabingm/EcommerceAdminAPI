@@ -7,6 +7,12 @@ const ProductSchema = mongoose.Schema(
 			require: true,
 			default: false,
 		},
+
+		featured: {
+			type: Boolean,
+			require: true,
+			default: false,
+		},
 		name: {
 			type: String,
 			require: true,

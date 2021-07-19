@@ -4,8 +4,10 @@ const shortStr = Joi.string().max(100);
 const longStr = Joi.string().max(2000);
 const email = Joi.string().min(3).max(50).required();
 const password = Joi.string().max(50).required();
+const text = Joi.string().required();
 const date = Joi.date().allow(null).allow("");
 const num = Joi.number();
+const phone = Joi.number();
 const args = Joi.array();
 const boolean = Joi.boolean();
 
@@ -16,6 +18,26 @@ export const newUserValidation = (req, res, next) => {
 		email,
 		password,
 		role: shortStr,
+	});
+
+	//validation
+	const value = schema.validate(req.body);
+
+	if (value.error) {
+		return res.json({
+			status: "error",
+			message: value.error.message,
+		});
+	}
+
+	next();
+};
+export const contactValidation = (req, res, next) => {
+	const schema = Joi.object({
+		name: shortStr.required(),
+		email,
+		phone,
+		text,
 	});
 
 	//validation
@@ -57,6 +79,7 @@ export const newProductValidation = (req, res, next) => {
 	const schema = Joi.object({
 		name: shortStr.required(),
 		qty: num.required(),
+		featured:boolean.required(),
 		status: boolean.required(),
 		price: num.required(),
 		salePrice: num,
@@ -92,6 +115,7 @@ export const updateProductValidation = (req, res, next) => {
 	const schema = Joi.object({
 		_id: shortStr.required(),
 		status: boolean.required(),
+		featured: boolean.required(),
 		name: shortStr.required(),
 		slug: shortStr.required(),
 		qty: num.required(),

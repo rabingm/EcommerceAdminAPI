@@ -29,6 +29,12 @@ Content-Type: application/json
   "role": "user"
 }
 
+### Logout api endpoing
+POST  http://localhost:8000/api/v1/user/logout
+Content-Type: application/json
+
+{_id:"vdhfjv"}
+
 
 
 
@@ -78,3 +84,8 @@ GET   http://localhost:8000/api/v1/product/607a850e263dc01ac00d540c
 # Request fresh accessJWt
 GET  http://localhost:8000/api/v1/token
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYy5jb20iLCJpYXQiOjE2MTk0ODI3NDAsImV4cCI6MTYyMjA3NDc0MH0.Ug2GZHZXlcP1zxjUcCA_Hkea047-Yzb1R_bCKnacABY
+
+### get Orders
+GET  http://localhost:8000/api/v1/order
+### get Orders
+GET  http://localhost:8000/api/v1/contactus

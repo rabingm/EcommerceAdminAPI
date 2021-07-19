@@ -30,12 +30,16 @@ import userRouter from "./routers/user.router.js";
 import categoryRouter from "./routers/category.router.js";
 import productRouter from "./routers/product.router.js";
 import tokenRouter from "./routers/token.router.js";
+import orderRouter from "./routers/order.router.js";
+import contactRouter from "./routers/contactus.router.js";
 //USE APIS
 app.use("/api/v1/login", loginRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/token", tokenRouter);
+app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/contactus", contactRouter);
 
 app.get("/", (req, res) => {
 	res.send("Hello World");

@@ -54,6 +54,23 @@ export const storeRefreshJWT = (_id, token) => {
 		}
 	});
 };
+export const deleteRefreshJwtByUserId = (_id) => {
+	
+		try {
+			UsersSchema.findOneAndUpdate(
+				{ _id },
+				{
+					$set: { "refreshJWT.token": "", "refreshJWT.addedAt": Date.now() },
+				},
+				{ new: true }
+			)
+				.then(data => console.log(data))
+				.catch(error => {console.log(error)});
+		} catch (error) {
+			console.log(error);
+		}
+	
+};
 
 export const getUserByEmailAndRefreshJWT = ({ email, refreshJWT }) => {
 	return new Promise((resolve, reject) => {

@@ -5,7 +5,11 @@ import { hashPassword } from "../helpers/bcrypt.helper.js";
 import { verifyAccessJwt } from "../helpers/jwt.helper.js";
 import { userAuthorization } from "../middlewares/authorization.middleware.js";
 import { newUserValidation } from "../middlewares/formValidation.middleware.js";
-import { createUser, getUserById } from "../models/user/User.model.js";
+import { deleteAccessJwtByUserId } from "../models/session/Session.model.js";
+import { createUser, getUserById, deleteRefreshJwtByUserId
+} from "../models/user/User.model.js";
+
+
 
 router.all("*", (req, res, next) => {
 	next();
@@ -75,6 +79,35 @@ router.post("/", newUserValidation, async (req, res) => {
 		}
 
 		throw new Error(error.message);
+	}
+});
+router.post("/logout", async (req, res) => {
+	try {
+	const {_id} =req.body
+		// const {accessJWT, refreshJWT} = 
+
+
+		//delete access from session database
+		deleteAccessJwtByUserId(_id)
+		
+		//delete refreshJWT from user table
+
+		deleteRefreshJwtByUserId(_id)
+
+
+
+		res.send({
+			status:"success",
+			message:"You're logged out now"
+		})
+		
+	} catch (error) {
+		console.log(error)
+		res.send({
+			status:"error",
+			message:"couldn't complete the process"
+		})
+		
 	}
 });
 
